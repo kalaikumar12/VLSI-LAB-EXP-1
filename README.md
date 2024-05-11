@@ -1,10 +1,6 @@
-SIMULATION OF LOGIC GATES ,ADDERS AND SUBTRACTORS
+AIM : To simulate and synthesis SR, JK, T, D - FLIPFLOP, COUNTER DESIGN using Vivado 2023.2.
 
-AIM: To simulate Logic Gates ,Adders and Subtractors using Vivado 2023.2.
-
-APPARATUS REQUIRED:
-
-VIVADO 2023.2
+APPARATUS REQUIRED : Vivado™ ML 2023.2
 
 PROCEDURE:
 
@@ -26,177 +22,274 @@ Run Simulation: Start the simulation by clicking on the "Run" button in the simu
 
 View Results: After the simulation completes, you can view waveforms, debug signals, and analyze the behavior of your design.
 
-LOGIC GATES LOGIC DIAGRAM image
+LOGIC DIAGRAM
 
-VERILOG CODE
+SR FLIPFLOP
 
-module logicgate(a,b,andgate,orgate,nandgate,norgate,xorgate,xnorgate,notgate);
+image
 
-input a,b;
+JK FLIPFLOP
 
-output andgate,orgate,nandgate,norgate,xorgate,xnorgate,notgate;
+image
 
-and(andgate,a,b);
+T FLIPFLOP
 
-or(orgate,a,b);
+image
 
-nand(nandgate,a,b);
+D FLIPFLOP
 
-nor(norgate,a,b);
+image
 
-xor(xorgate,a,b);
+COUNTER
 
-xnor(xnorgate,a,b);
+image
 
-not(notgate,a);
+EXPERIMENTS :
 
+#1
+
+D FLIP FLOP :-
+
+Code:
+
+module dff(d,clk,rst,q);
+input d,clk,rst;
+output reg q;
+always @(posedge clk)
+begin
+if (rst==1)
+q=1'b0;
+else
+q=d;
+end
 endmodule
-OUTPUT WAVEFORM
+OUTPUT:-
+
+Simulation :
 
 image
 
-**HALF ADDER
-
-LOGIC DIAGRAM**
+Elaborated Design :
 
 image
 
-VERILOG CODE
+#2
 
-module half_adder(a,b,sum,carry);
+JK FLIP FLOP:-
 
-input a,b;
+Code:
 
-output sum,carry;
-
-xor g1(sum,a,b);
-
-and g2(carry,a,b);
-
-endmodule 
-OUTPUT WAVEFORM
-
-image
-
-**FULL ADDER
-
-LOGIC DIAGRAM**
-
-image
-
-VERILOG CODE
-
-module fulladder(a,b,c,sum,carry);
-
-input a,b,c;
-
-output sum,carry;
-
-wire w1,w2,w3;
-
-xor(w1,a,b);
-
-xor(sum,w1,c);
-
-and(w2,w1,c);
-
-and(w3,a,b);
-
-or(carry,w2,w3);
-
+module JK_flipflop (q, q_bar, j,k, clk, reset);
+  input j,k,clk, reset;
+  output reg q;
+  output q_bar;
+  always@(posedge clk) begin
+    if(!reset)        q <= 0;
+    else 
+  begin
+      case({j,k})
+        2'b00: q <= q;  
+        2'b01: q <= 1'b0; 
+        2'b10: q <= 1'b1;
+        2'b11: q <= ~q; 
+      endcase
+    end
+  end
+  assign q_bar = ~q;
 endmodule
-OUTPUT WAVEFORM
+OUTPUUT:-
+
+Simulation Output:
 
 image
 
-**HALF SUBTRACTOR
-
-LOGIC DIAGRAM**
+Elaborated Design:
 
 image
 
-VERILOG CODE
+#3
 
-module halfsub(a,b,diff,borrow);
+MOD 10 COUNTER :-
 
-input a,b;
+Code :
 
-output diff,borrow;
-
-xor(diff,a,b);
-
-and(borrow,~a,b);
-
+module counter(
+input clk,rst,enable,
+output reg [3:0]counter_output
+);
+always@ (posedge clk)
+begin 
+if( rst | counter_output==4'b1001)
+counter_output <= 4'b0000;
+else if(enable)
+counter_output <= counter_output + 1;
+else
+counter_output <= 0;
+end
 endmodule
-OUTPUT WAVEFORM
+OUTPUT:-
+
+Simulation :
 
 image
 
-FULL SUBTRACTOR LOGIC DIAGRAM
+Elaborated Design :
 
 image
 
-VERILOG CODE
+#4
 
-module fs(a,b,bin,d,bout);
+Ripple Counter:-
 
-input a,b,bin;
+Code :
 
-output d,bout;
-
-wire w1,w2,w3;
-
-xor(w1,a,b);
-
-xor(d,w1,bin);
-
-and(w2,~a,b);
-
-and(w3,~w1,bin);
-
-or(bout,w3,w2);
-
+module D_FF(q, d, clk, reset);
+output q;
+input d, clk, reset;
+reg q;
+always @(posedge reset or negedge clk)
+if (reset)
+q = 1'b0;
+else
+q = d;
 endmodule
-OUTPUT WAVEFORM
-
-image
-
-RIPPLE CARRY ADDER LOGIC DIAGRAM
-
-image
-
-VERILOG CODE
-
-module fulladder(a,b,c,sum,carry);
-input a,b,c;
-output sum,carry;
-wire w1,w2,w3;
-xor(w1,a,b);
-xor(sum,w1,c);
-and(w2,w1,c);
-and(w3,a,b);
-or(carry,w2,w3);
+module T_FF(q, clk, reset);
+output q;
+input clk, reset;
+wire d;
+D_FF dff0(q, d, clk, reset);
+not n1(d, q); 
 endmodule
-
-module rca_8bit(a,b,cin,s,cout);
-input [7:0]a,b;
-input cin;
-output [7:0]s;
-output cout;
-wire [7:1]w;
-fulladder f1(a[0], b[0], cin, s[0], w[1]);
-fulladder f2(a[1], b[1], w[1], s[1], w[2]);
-fulladder f3(a[2], b[2], w[2], s[2], w[3]);
-fulladder f4(a[3], b[3], w[3], s[3], w[4]);
-fulladder f5(a[4], b[4], w[4], s[4], w[5]);
-fulladder f6(a[5], b[5], w[5], s[5], w[6]);
-fulladder f7(a[6], b[6], w[6], s[6], w[7]);
-fulladder f8(a[7], b[7], w[7], s[7], cout);
+module ripple_carry_counter(q, clk, reset);
+output [3:0] q;
+input clk, reset;
+T_FF tffo(q[0], clk, reset);
+T_FF tff1(q[1], q[0], reset);
+T_FF tff2(q[2], q[1], reset);
+T_FF tff3(q[3], q[2], reset);
 endmodule
-OUTPUT WAVEFORM
+OUTPUT:-
+
+Simulation:
 
 image
 
-result
+Elaborated Design :
 
-simulation of Logic Gates ,Adders and Subtractors using Vivado 2023.2 completed successfully
+image
+
+#5
+
+SR FLIPFLOP :-
+
+Code :
+
+module SR_flipflop (q, q_bar, s,r, clk, reset);
+  input s,r,clk, reset;
+  output reg q;
+  output q_bar;
+  always@(posedge clk) begin 
+    if(!reset)�        q <= 0;
+    else 
+  begin
+      case({s,r})
+        2'b00: q <= q;    
+        2'b01: q <= 1'b0; 
+        2'b10: q <= 1'b1; 
+        2'b11: q <= 1'bx; 
+      endcase
+    end
+  end
+  assign q_bar = ~q;
+endmodule
+OUTPUT:-
+
+Simulation :
+
+image
+
+Elaborated Design :
+
+image
+
+#6
+
+T FLIP FLOP :-
+
+Code :
+
+module tff (t,clk, rstn,q);  
+ input t,clk, rstn;
+ output reg q;
+  always @ (posedge clk) begin  
+    if (!rstn)  
+      q <= 0;  
+    else  
+        if (t)  
+            q <= ~q;  
+        else  
+            q <= q;  
+  end  
+endmodule
+OUTPUT:-
+
+Simulation :
+
+image
+
+Elaborated Design :
+
+image
+
+#7
+
+UP DOWN COUNTER :-
+
+Code:
+
+module updown_counter(clk,rst,updown,out);
+input clk,rst,updown;
+output reg [3:0]out;
+always@(posedge clk)
+begin
+if (rst==1)
+out=4'b0000;
+else if(updown==1)
+out=out+1;
+else
+out=out-1;
+end
+endmodule
+OUTPUT:-
+
+Simulation:-
+
+image
+
+Elaborated Design:-
+
+image
+
+RESULT :
+
+Simulate And Synthesis SR, JK, T, D - FLIPFLOP, COUNTER DESIGN is Successfully Verified using Vivado Software.
+
+About
+No description, website, or topics provided.
+Resources
+ Readme
+ Activity
+Stars
+ 0 stars
+Watchers
+ 0 watching
+Forks
+ 0 forks
+Report repository
+Releases
+No releases published
+Packages
+No packages published
+Languages
+Verilog
+100.0%
