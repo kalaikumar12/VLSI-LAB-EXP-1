@@ -1,295 +1,219 @@
-AIM : To simulate and synthesis SR, JK, T, D - FLIPFLOP, COUNTER DESIGN using Vivado 2023.2.
 
-APPARATUS REQUIRED : Vivado™ ML 2023.2
+SIMULATION OF LOGIC GATES ,ADDERS AND SUBTRACTORS
 
-PROCEDURE:
+AIM: 
+To simulate Logic Gates ,Adders and Subtractors using Vivado 2023.2.
 
-Open Vivado: Launch Xilinx Vivado software on your computer.
+APPARATUS REQUIRED: 
 
-Create a New Project: Click on "Create Project" from the welcome page or navigate through "File" > "Project" > "New".
+VIVADO 2023.2
 
-Project Settings: Follow the prompts to set up your project. Specify the project name, location, and select RTL project type.
+PROCEDURE: 
+1. Open Vivado: Launch Xilinx Vivado software on your computer.
 
-Add Design Files: Add your Verilog design files to the project. You can do this by right-clicking on "Design Sources" in the Sources window, then selecting "Add Sources". Choose your Verilog files from the file browser.
+2. Create a New Project: Click on "Create Project" from the welcome page or navigate through "File" > "Project" > "New".
 
-Specify Simulation Settings: Go to "Simulation" > "Simulation Settings". Choose your simulation language (Verilog in this case) and simulation tool (Vivado Simulator).
+3. Project Settings: Follow the prompts to set up your project. Specify the project name, location, and select RTL project type.
 
-Run Simulation: Go to "Flow" > "Run Simulation" > "Run Behavioral Simulation". This will launch the Vivado Simulator and compile your design for simulation.
+4. Add Design Files: Add your Verilog design files to the project. You can do this by right-clicking on "Design Sources" in the Sources window, then selecting "Add Sources". Choose your Verilog files from the file browser.
 
-Set Simulation Time: In the Vivado Simulator window, set the simulation time if it's not set automatically. This determines how long the simulation will run.
+5. Specify Simulation Settings: Go to "Simulation" > "Simulation Settings". Choose your simulation language (Verilog in this case) and simulation tool (Vivado Simulator).
 
-Run Simulation: Start the simulation by clicking on the "Run" button in the simulation window.
+6. Run Simulation: Go to "Flow" > "Run Simulation" > "Run Behavioral Simulation". This will launch the Vivado Simulator and compile your design for simulation.
 
-View Results: After the simulation completes, you can view waveforms, debug signals, and analyze the behavior of your design.
+7. Set Simulation Time: In the Vivado Simulator window, set the simulation time if it's not set automatically. This determines how long the simulation will run.
 
-LOGIC DIAGRAM
+8. Run Simulation: Start the simulation by clicking on the "Run" button in the simulation window.
 
-SR FLIPFLOP
+9. View Results: After the simulation completes, you can view waveforms, debug signals, and analyze the behavior of your design.
 
-image
+**LOGIC GATES
+LOGIC DIAGRAM**
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/6881dbeb-686d-4a10-a17e-fe9cb11ae4d3)
 
-JK FLIPFLOP
+**VERILOG CODE**
+~~~
+module logicgate(a,b,andgate,orgate,nandgate,norgate,xorgate,xnorgate,notgate);
 
-image
+input a,b;
 
-T FLIPFLOP
+output andgate,orgate,nandgate,norgate,xorgate,xnorgate,notgate;
 
-image
+and(andgate,a,b);
 
-D FLIPFLOP
+or(orgate,a,b);
 
-image
+nand(nandgate,a,b);
 
-COUNTER
+nor(norgate,a,b);
 
-image
+xor(xorgate,a,b);
 
-EXPERIMENTS :
+xnor(xnorgate,a,b);
 
-#1
+not(notgate,a);
 
-D FLIP FLOP :-
-
-Code:
-
-module dff(d,clk,rst,q);
-input d,clk,rst;
-output reg q;
-always @(posedge clk)
-begin
-if (rst==1)
-q=1'b0;
-else
-q=d;
-end
 endmodule
-OUTPUT:-
+~~~
+**OUTPUT WAVEFORM**
 
-Simulation :
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/7496d74e-e18b-472e-96e0-f0de0e8ce4d2)
 
-image
+**HALF ADDER
 
-Elaborated Design :
+LOGIC DIAGRAM**
 
-image
 
-#2
 
-JK FLIP FLOP:-
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/8fa622b5-5e52-40f0-9690-833ffb2d832b)
 
-Code:
+**VERILOG CODE**
+~~~
+module half_adder(a,b,sum,carry);
 
-module JK_flipflop (q, q_bar, j,k, clk, reset);
-  input j,k,clk, reset;
-  output reg q;
-  output q_bar;
-  always@(posedge clk) begin
-    if(!reset)        q <= 0;
-    else 
-  begin
-      case({j,k})
-        2'b00: q <= q;  
-        2'b01: q <= 1'b0; 
-        2'b10: q <= 1'b1;
-        2'b11: q <= ~q; 
-      endcase
-    end
-  end
-  assign q_bar = ~q;
+input a,b;
+
+output sum,carry;
+
+xor g1(sum,a,b);
+
+and g2(carry,a,b);
+
+endmodule 
+~~~
+**OUTPUT WAVEFORM**
+
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/6ccd3005-54bb-40bc-9e5b-90def2406528)
+
+**FULL ADDER
+
+LOGIC DIAGRAM**
+
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/592a4aee-fa19-4a49-a089-51045851fe19)
+
+**VERILOG CODE**
+~~~
+module fulladder(a,b,c,sum,carry);
+
+input a,b,c;
+
+output sum,carry;
+
+wire w1,w2,w3;
+
+xor(w1,a,b);
+
+xor(sum,w1,c);
+
+and(w2,w1,c);
+
+and(w3,a,b);
+
+or(carry,w2,w3);
+
 endmodule
-OUTPUUT:-
+~~~
+**OUTPUT WAVEFORM**
 
-Simulation Output:
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/a056df39-4f5d-40ce-b697-b7457efbc14e)
 
-image
+**HALF SUBTRACTOR
 
-Elaborated Design:
+LOGIC DIAGRAM**
 
-image
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/2d7824ed-0b1f-4ea0-bafc-1753a75d2b74)
 
-#3
+**VERILOG CODE**
+~~~
+module halfsub(a,b,diff,borrow);
 
-MOD 10 COUNTER :-
+input a,b;
 
-Code :
+output diff,borrow;
 
-module counter(
-input clk,rst,enable,
-output reg [3:0]counter_output
-);
-always@ (posedge clk)
-begin 
-if( rst | counter_output==4'b1001)
-counter_output <= 4'b0000;
-else if(enable)
-counter_output <= counter_output + 1;
-else
-counter_output <= 0;
-end
+xor(diff,a,b);
+
+and(borrow,~a,b);
+
 endmodule
-OUTPUT:-
+~~~
+**OUTPUT WAVEFORM**
 
-Simulation :
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/3e2416fe-b489-4e2a-925b-cf1b011b99d5)
 
-image
+**FULL SUBTRACTOR
+LOGIC DIAGRAM**
 
-Elaborated Design :
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/5acb458d-4b6d-418c-bfcb-fba40635778a)
 
-image
+**VERILOG CODE** 
+~~~
+module fs(a,b,bin,d,bout);
 
-#4
+input a,b,bin;
 
-Ripple Counter:-
+output d,bout;
 
-Code :
+wire w1,w2,w3;
 
-module D_FF(q, d, clk, reset);
-output q;
-input d, clk, reset;
-reg q;
-always @(posedge reset or negedge clk)
-if (reset)
-q = 1'b0;
-else
-q = d;
+xor(w1,a,b);
+
+xor(d,w1,bin);
+
+and(w2,~a,b);
+
+and(w3,~w1,bin);
+
+or(bout,w3,w2);
+
 endmodule
-module T_FF(q, clk, reset);
-output q;
-input clk, reset;
-wire d;
-D_FF dff0(q, d, clk, reset);
-not n1(d, q); 
+~~~
+**OUTPUT WAVEFORM**
+
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/76f82a16-843e-4211-bed4-a698fe62a884)
+
+**RIPPLE CARRY ADDER
+LOGIC DIAGRAM**
+
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/e7a32599-b9ed-4f79-a00c-ee58657e5e07)
+
+**VERILOG CODE** 
+~~~
+module fulladder(a,b,c,sum,carry);
+input a,b,c;
+output sum,carry;
+wire w1,w2,w3;
+xor(w1,a,b);
+xor(sum,w1,c);
+and(w2,w1,c);
+and(w3,a,b);
+or(carry,w2,w3);
 endmodule
-module ripple_carry_counter(q, clk, reset);
-output [3:0] q;
-input clk, reset;
-T_FF tffo(q[0], clk, reset);
-T_FF tff1(q[1], q[0], reset);
-T_FF tff2(q[2], q[1], reset);
-T_FF tff3(q[3], q[2], reset);
+
+module rca_8bit(a,b,cin,s,cout);
+input [7:0]a,b;
+input cin;
+output [7:0]s;
+output cout;
+wire [7:1]w;
+fulladder f1(a[0], b[0], cin, s[0], w[1]);
+fulladder f2(a[1], b[1], w[1], s[1], w[2]);
+fulladder f3(a[2], b[2], w[2], s[2], w[3]);
+fulladder f4(a[3], b[3], w[3], s[3], w[4]);
+fulladder f5(a[4], b[4], w[4], s[4], w[5]);
+fulladder f6(a[5], b[5], w[5], s[5], w[6]);
+fulladder f7(a[6], b[6], w[6], s[6], w[7]);
+fulladder f8(a[7], b[7], w[7], s[7], cout);
 endmodule
-OUTPUT:-
+~~~
+**OUTPUT WAVEFORM**
 
-Simulation:
+![image](https://github.com/CalebSamraj14/VLSI-LAB-EXP-1/assets/163808923/c49e900c-4cda-4b35-a768-b613cf48fa3e)
 
-image
+**result**
 
-Elaborated Design :
+ simulation of Logic Gates ,Adders and Subtractors using Vivado 2023.2 completed successfully
 
-image
 
-#5
 
-SR FLIPFLOP :-
 
-Code :
-
-module SR_flipflop (q, q_bar, s,r, clk, reset);
-  input s,r,clk, reset;
-  output reg q;
-  output q_bar;
-  always@(posedge clk) begin 
-    if(!reset)�        q <= 0;
-    else 
-  begin
-      case({s,r})
-        2'b00: q <= q;    
-        2'b01: q <= 1'b0; 
-        2'b10: q <= 1'b1; 
-        2'b11: q <= 1'bx; 
-      endcase
-    end
-  end
-  assign q_bar = ~q;
-endmodule
-OUTPUT:-
-
-Simulation :
-
-image
-
-Elaborated Design :
-
-image
-
-#6
-
-T FLIP FLOP :-
-
-Code :
-
-module tff (t,clk, rstn,q);  
- input t,clk, rstn;
- output reg q;
-  always @ (posedge clk) begin  
-    if (!rstn)  
-      q <= 0;  
-    else  
-        if (t)  
-            q <= ~q;  
-        else  
-            q <= q;  
-  end  
-endmodule
-OUTPUT:-
-
-Simulation :
-
-image
-
-Elaborated Design :
-
-image
-
-#7
-
-UP DOWN COUNTER :-
-
-Code:
-
-module updown_counter(clk,rst,updown,out);
-input clk,rst,updown;
-output reg [3:0]out;
-always@(posedge clk)
-begin
-if (rst==1)
-out=4'b0000;
-else if(updown==1)
-out=out+1;
-else
-out=out-1;
-end
-endmodule
-OUTPUT:-
-
-Simulation:-
-
-image
-
-Elaborated Design:-
-
-image
-
-RESULT :
-
-Simulate And Synthesis SR, JK, T, D - FLIPFLOP, COUNTER DESIGN is Successfully Verified using Vivado Software.
-
-About
-No description, website, or topics provided.
-Resources
- Readme
- Activity
-Stars
- 0 stars
-Watchers
- 0 watching
-Forks
- 0 forks
-Report repository
-Releases
-No releases published
-Packages
-No packages published
-Languages
-Verilog
-100.0%
